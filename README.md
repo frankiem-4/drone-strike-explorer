@@ -31,7 +31,7 @@ npm run build
 npm run preview  # test the build locally
 ```
 
-The site is hosted on GitHub Pages.
+The site an be hosted on GitHub Pages.
 
 ---
 
@@ -43,7 +43,12 @@ This repo includes a GitHub Actions workflow that automatically builds and deplo
 2. Go to your repo on GitHub
 3. Click **Settings** → **Pages** (in the left sidebar)
 4. Under "Build and deployment", set **Source** to **GitHub Actions**
-5. That's it — the workflow runs automatically on every push to `main`
+5. That's it the workflow runs automatically on every push to `main`
+6. Under the Settings, for the Repo, you'll need to go to Pages on the left menu
+7. Then you will need to change the Source to Deploy from Branch
+8. Select Main (or whevere you want to deploy from)
+9. Save.
+10. Push the site to Main, and it should build.
 
 You can check the status of deployments in the **Actions** tab. The first build takes a couple minutes since it needs to fetch all the API data.
 
