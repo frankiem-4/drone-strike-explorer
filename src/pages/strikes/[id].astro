@@ -1,0 +1,157 @@
+---
+
+// detail page for each strike
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllStrikes, formatDate } from "../../data/strikes.js";
+
+export async function getStaticPaths() {
+    const strikes = await getAllStrikes();
+  
+    let paths = []
+  for (let i = 0; i < strikes.length; i++) {
+      let s = strikes[i]
+    paths.push({
+        params: { id: s.slug },
+      props: { strike: s }
+        })
+  }
+    return paths
+}
+
+const { strike } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+// check for coordinates
+let hasCoords = false
+if (strike.lat && strike.lon) {
+    hasCoords = true
+}
+---
+
+<BaseLayout title={`Strike #${strike.number}`}>
+    <h2>Strike #{strike.number}: {strike.country}</h2>
+  
+    <div class="strike-meta">
+    <div class="meta-item">
+        <div class="label">Date</div>
+      <div class="value">{formatDate(strike.date)}</div>
+        </div>
+    <div class="meta-item">
+        <div class="label">Country</div>
+      <div class="value">{strike.country}</div>
+        </div>
+    <div class="meta-item">
+        <div class="label">Location</div>
+      <div class="value">{strike.location || "Unknown"}</div>
+        </div>
+    {strike.town && (
+        <div class="meta-item">
+        <div class="label">Town</div>
+          <div class="value">{strike.town}</div>
+      </div>
+        )}
+  </div>
+
+    <h3>Casualty Information</h3>
+  <div class="strike-meta">
+      <div class="meta-item">
+      <div class="label">Deaths</div>
+        <div class="value">{strike.deaths || "Unknown"}</div>
+    </div>
+      <div class="meta-item">
+      <div class="label">Deaths (Min-Max)</div>
+        <div class="value">{strike.deaths_min || "?"} - {strike.deaths_max || "?"}</div>
+    </div>
+      <div class="meta-item">
+      <div class="label">Civilians</div>
+        <div class="value">{strike.civilians || "Unknown"}</div>
+    </div>
+      <div class="meta-item">
+      <div class="label">Children</div>
+        <div class="value">{strike.children || "Unknown"}</div>
+    </div>
+      <div class="meta-item">
+      <div class="label">Injuries</div>
+        <div class="value">{strike.injuries || "Unknown"}</div>
+    </div>
+      {strike.target && (
+      <div class="meta-item">
+          <div class="label">Target</div>
+        <div class="value">{strike.target}</div>
+          </div>
+    )}
+    </div>
+
+  {strike.narrative && (
+      <div>
+      <h3>Narrative</h3>
+        <p class="narrative">{strike.narrative}</p>
+    </div>
+    )}
+
+  {strike.bij_summary_short && (
+      <div>
+      <h3>Bureau Summary</h3>
+        <p class="narrative">{strike.bij_summary_short}</p>
+    </div>
+    )}
+
+  {strike.names && (
+      <div>
+      <h3>Names</h3>
+        <p>{strike.names}</p>
+    </div>
+    )}
+
+  {hasCoords == true && (
+      <div>
+      <h3>Location Map</h3>
+        <div id="strike-map" class="map-container"></div>
+      <p class="coords">Coordinates: {strike.lat}, {strike.lon}</p>
+        </div>
+  )}
+
+    {strike.bij_link && (
+    <p>
+        <strong>Source:</strong> 
+      <a href={strike.bij_link} target="_blank" rel="noopener">Bureau of Investigative Journalism</a>
+        </p>
+  )}
+
+    <a href={`${base}strikes/`} class="back-link">← Back to All Strikes</a>
+</BaseLayout>
+
+{hasCoords == true && (
+    <script define:vars={{ lat: strike.lat, lon: strike.lon, country: strike.country, location: strike.location }}>
+    // wait for page to load then setup map
+      document.addEventListener('DOMContentLoaded', function() {
+      var map = L.map('strike-map').setView([lat, lon], 8);
+      
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+      
+        var marker = L.marker([lat, lon]).addTo(map);
+      
+        var popupText = '<b>' + country + '</b><br>'
+      if (location) {
+          popupText = popupText + location
+      } else {
+          popupText = popupText + 'Unknown location'
+        }
+      marker.bindPopup(popupText).openPopup();
+        });
+  </script>
+)}
+
+<style>
+    .coords {
+    font-size: 0.9rem;
+      color: #888;
+    margin-top: 0.5rem;
+    }
+  h3 {
+      margin-top: 2rem;
+  }
+</style>

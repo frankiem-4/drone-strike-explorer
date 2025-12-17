@@ -1,0 +1,64 @@
+---
+
+// list of all strikes
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllStrikes, formatDate } from "../../data/strikes.js";
+
+const strikes = await getAllStrikes();
+const base = import.meta.env.BASE_URL;
+
+// sort by date, newest first
+let sortedStrikes = []
+for (let i = 0; i < strikes.length; i++) {
+    sortedStrikes.push(strikes[i])
+}
+sortedStrikes.sort((a, b) => {
+    return b.date - a.date
+})
+---
+
+<BaseLayout title="All Strikes">
+    <h2>All Documented Strikes</h2>
+  <p>Showing {strikes.length} strikes, sorted by date (most recent first).</p>
+
+    <table>
+    <thead>
+        <tr>
+        <th>#</th>
+          <th>Date</th>
+        <th>Country</th>
+          <th>Location</th>
+        <th>Deaths</th>
+          <th>Civilians</th>
+        <th>Details</th>
+          </tr>
+    </thead>
+      <tbody>
+      {sortedStrikes.map((strike) => (
+          <tr>
+          <td>{strike.number}</td>
+            <td>{formatDate(strike.date)}</td>
+          <td>{strike.country}</td>
+            <td>{strike.location || strike.town || "Unknown"}</td>
+          <td>{strike.deaths || "?"}</td>
+            <td>{strike.civilians || "?"}</td>
+          <td>
+              <a href={`${base}strikes/${strike.slug}/`}>View →</a>
+          </td>
+            </tr>
+      ))}
+        </tbody>
+  </table>
+
+    <a href={base} class="back-link">← Back to Home</a>
+</BaseLayout>
+
+<style>
+    table {
+    margin-top: 1.5rem;
+    }
+  td a {
+      font-weight: bold;
+  }
+</style>

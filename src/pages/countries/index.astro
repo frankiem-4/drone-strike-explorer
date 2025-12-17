@@ -1,0 +1,88 @@
+---
+
+// shows strikes by country
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllStrikes, getCountries } from "../../data/strikes.js";
+
+const strikes = await getAllStrikes();
+const countries = await getCountries();
+const base = import.meta.env.BASE_URL;
+
+// helper for parsing numbers
+function safeParseInt(val) {
+    if (val === null || val === undefined || val === "") {
+    return 0
+    }
+  var num = parseInt(val, 10)
+    if (isNaN(num)) {
+    return 0
+    }
+  return num
+}
+
+// build country data
+let countryStats = []
+
+for (let i = 0; i < countries.length; i++) {
+    let countryName = countries[i]
+  
+    // find all strikes for this country
+  let countryStrikes = []
+    for (let j = 0; j < strikes.length; j++) {
+    if (strikes[j].country === countryName) {
+        countryStrikes.push(strikes[j])
+    }
+    }
+  
+    // add up deaths
+  let deaths = 0
+    for (let k = 0; k < countryStrikes.length; k++) {
+    deaths = deaths + safeParseInt(countryStrikes[k].deaths_min)
+    }
+  
+    countryStats.push({
+    name: countryName,
+      strikeCount: countryStrikes.length,
+    totalDeaths: deaths
+    })
+}
+
+// sort by strike count
+countryStats.sort(function(a, b) {
+    return b.strikeCount - a.strikeCount
+})
+---
+
+<BaseLayout title="Strikes by Country">
+    <h2>Strikes by Country</h2>
+  <p>Drone strikes have been documented in {countries.length} countries.</p>
+
+    <div class="grid">
+    {countryStats.map(country => (
+        <div class="country-card">
+        <h3>{country.name}</h3>
+          <div class="count">{country.strikeCount}</div>
+        <div class="label">strikes</div>
+          <p class="deaths">~{country.totalDeaths.toLocaleString()} minimum deaths</p>
+      </div>
+        ))}
+  </div>
+
+    <a href={base} class="back-link">← Back to Home</a>
+</BaseLayout>
+
+<style>
+    .country-card .label {
+    color: #888;
+      font-size: 0.9rem;
+  }
+    .country-card .deaths {
+    margin-top: 1rem;
+      font-size: 0.85rem;
+    color: #aaa;
+    }
+  .grid {
+      margin-top: 2rem;
+  }
+</style>

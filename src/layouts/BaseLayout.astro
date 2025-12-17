@@ -1,0 +1,141 @@
+---
+
+// layout for all pages
+
+const { title } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore data on US drone strikes worldwide" />
+  <title>{title} | Drone Strike Explorer</title>
+    <link rel="stylesheet" href={`${base}styles/main.css`} />
+  
+  <!-- leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+</head>
+<body>
+    <header>
+    <nav>
+        <a href={`${base}`}>Home</a>
+      <a href={`${base}strikes/`}>All Strikes</a>
+        <a href={`${base}map-data/`}>Map Data</a>
+      <a href={`${base}countries/`}>By Country</a>
+        </nav>
+    <h1>Drone Strike Explorer</h1>
+    </header>
+
+  <main>
+      <slot />
+  </main>
+
+    <footer>
+    <p>Data source: <a href="https://dronestre.am" target="_blank" rel="noopener">dronestre.am</a> | Originally compiled by <a href="https://www.thebureauinvestigates.com" target="_blank" rel="noopener">The Bureau of Investigative Journalism</a></p>
+
+    </footer>
+
+  <!-- leaflet js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""></script>
+</body>
+</html>
+
+<style>
+    header {
+    background: linear-gradient(135deg, #0d1c30 0%, #132238 100%);
+      color: #e2e8f0;
+    padding: 1.25rem 2rem;
+      text-align: center;
+    border-bottom: 2px solid #1e3a5f;
+    }
+
+  nav {
+      display: flex;
+    justify-content: center;
+      gap: 2.5rem;
+    margin-bottom: 1rem;
+    }
+
+  nav a {
+    color: #f59e0b;
+      text-decoration: none;
+    font-weight: 600;
+      font-size: 1rem;
+    padding: 0.5rem 0;
+      position: relative;
+    transition: color 0.2s ease;
+    }
+
+  /* hover underline thing */
+    nav a::after {
+    content: '';
+      position: absolute;
+    bottom: 0;
+      left: 0;
+    width: 0;
+      height: 2px;
+    background: #fbbf24;
+      transition: width 0.2s ease;
+  }
+
+    nav a:hover {
+    color: #fbbf24;
+      text-decoration: none;
+  }
+    nav a:hover::after {
+    width: 100%;
+    }
+
+  h1 {
+      margin: 0;
+    font-size: 1.75rem;
+      font-weight: 700;
+    color: #f8fafc;
+    }
+
+  main {
+    max-width: 1200px;
+      margin: 0 auto;
+    padding: 2rem;
+      min-height: calc(100vh - 220px);
+  }
+
+    footer {
+    background: linear-gradient(135deg, #0d1c30 0%, #132238 100%);
+      color: #94a3b8;
+    text-align: center;
+      padding: 1.5rem;
+    font-size: 0.9rem;
+      border-top: 2px solid #1e3a5f;
+  }
+    footer a {
+    color: #f59e0b;
+    }
+  footer a:hover {
+      color: #fbbf24;
+  }
+
+    /* mobile styles */
+  @media (max-width: 600px) {
+      nav {
+      gap: 1rem;
+        flex-wrap: wrap;
+    }
+      nav a {
+      font-size: 0.9rem;
+      }
+    h1 {
+        font-size: 1.4rem;
+    }
+      header {
+      padding: 1rem;
+      }
+  }
+</style>

@@ -1,0 +1,12 @@
+
+// config for local dev and github pages
+
+import { defineConfig } from 'astro/config';
+
+// only use base path for production (github pages)
+const isProduction = process.env.NODE_ENV === 'production';
+
+export default defineConfig({
+    site: 'https://cscie12.github.io',
+  base: isProduction ? '/final-project-frankiem-4' : '/',
+});

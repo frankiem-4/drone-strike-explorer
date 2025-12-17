@@ -1,0 +1,97 @@
+---
+
+// home page
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getLatestStrike, getStats, formatDate } from "../data/strikes.js";
+
+const latestStrike = await getLatestStrike();
+const stats = await getStats();
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Home">
+    <section class="intro">
+    <h2>About This Project</h2>
+      <p>
+      The Drone Strike Explorer provides a visual interface to explore data on 
+        US drone strikes compiled by <a href="https://dronestre.am" target="_blank">dronestre.am</a>, 
+      which sources its data from <a href="https://www.thebureauinvestigates.com" target="_blank">The Bureau of Investigative Journalism</a>.
+        </p>
+    <p>
+        This project was built using <strong>Astro</strong> for static site generation, 
+      with <strong>Leaflet.js</strong> for interactive maps. All data is fetched at build time 
+        from the public API.
+    </p>
+    </section>
+
+  <section class="stats">
+      <h2>Overview Statistics</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+        <div class="number">{stats.totalStrikes}</div>
+          <div class="label">Total Strikes</div>
+      </div>
+        <div class="stat-card">
+        <div class="number">{stats.countryCount}</div>
+          <div class="label">Countries</div>
+      </div>
+        <div class="stat-card">
+        <div class="number">{stats.totalDeaths.toLocaleString()}</div>
+          <div class="label">Minimum Deaths</div>
+      </div>
+        <div class="stat-card">
+        <div class="number">{stats.totalCivilians.toLocaleString()}</div>
+          <div class="label">Civilians Reported</div>
+      </div>
+        </div>
+  </section>
+
+    {latestStrike && (
+    <section class="latest">
+        <h2>Most Recent Strike in Dataset</h2>
+      <div class="card">
+          <h3>{latestStrike.country} — {latestStrike.location || "Unknown location"}</h3>
+        <p><strong>Date:</strong> {formatDate(latestStrike.date)}</p>
+          <p class="narrative">{latestStrike.narrative || latestStrike.bij_summary_short}</p>
+        <p>
+            <strong>Deaths:</strong> {latestStrike.deaths || "Unknown"} | 
+          <strong>Civilians:</strong> {latestStrike.civilians || "Unknown"}
+            </p>
+        <a href={`${base}strikes/${latestStrike.slug}/`} class="back-link">View Details →</a>
+          </div>
+    </section>
+    )}
+
+  <section class="explore">
+      <h2>Explore the Data</h2>
+    <div class="grid">
+        <a href={`${base}strikes/`} class="card">
+        <h3>📋 All Strikes</h3>
+          <p>Browse the complete list of documented drone strikes with dates, locations, and casualty data.</p>
+      </a>
+        <a href={`${base}countries/`} class="card">
+        <h3>🌍 By Country</h3>
+          <p>View strikes organized by country, with totals and breakdowns for each affected nation.</p>
+      </a>
+        </div>
+  </section>
+</BaseLayout>
+
+<style>
+    .intro p {
+    max-width: 800px;
+      line-height: 1.8;
+  }
+    .explore .card {
+    text-decoration: none;
+      display: block;
+  }
+    .explore .card h3 {
+    margin-bottom: 0.5rem;
+    }
+  .explore .card p {
+      color: #aaa;
+    margin: 0;
+    }
+</style>
