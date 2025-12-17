@@ -27,8 +27,16 @@ Open http://localhost:4321 in your browser.
 To build for production:
 
 ```bash
-npm run build
+Bash
+NODE_ENV=production npm run build
 npm run preview  # test the build locally
+
+Powershell
+$env:NODE_ENV="production"; npm run build; npm run preview
+
+
+
+
 ```
 
 The site is hosted on GitHub Pages.
