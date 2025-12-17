@@ -31,7 +31,7 @@ npm run build
 npm run preview  # test the build locally
 ```
 
-The site an be hosted on GitHub Pages.
+The site is hosted on GitHub Pages.
 
 ---
 
@@ -58,15 +58,15 @@ You will want to fill in your username and repo-name this has
 
 ## How Requirements Are Met
 
-**Pages built through build process (at least 3)** — 5 pages total: Home, All Strikes, Strike Detail, Map Data, and Countries. All built with Astro at build time.
+*Pages built through build process (at least 3)* 5 pages total: Home, All Strikes, Strike Detail, Map Data, and Countries. All built with Astro at build time.
 
-**Use of GitHub** — This repo, all code versioned here.
+**Use of GitHub** This repo, all code versioned here.
 
-**Data that drives site generation** — The dronestre.am API provides all strike data. Astro fetches it at build time and generates ~600+ static pages from it.
+**Data that drives site generation** The dronestre.am API provides all strike data. Astro fetches it at build time and generates ~600+ static pages from it.
 
-**Automated deployment** — Using GitHub Pages with a GitHub Actions workflow that builds and deploys on every push to main.
+**Automated deployment** Using GitHub Pages with a GitHub Actions workflow that builds and deploys on every push to main.
 
-**"Go deeper" aspect** — Leaflet.js interactive maps on every strike detail page (see below).
+**"Go deeper" aspect** Leaflet.js interactive maps on every strike detail page (see below).
 
 ---
 
@@ -85,7 +85,7 @@ For my enhancement, I added interactive maps using Leaflet.js. Every strike that
 - It adds real value — being able to see *where* these strikes happened makes the data more meaningful
 - It was a good fit since the API already has coordinates
 
-The map setup is in `src/pages/strikes/[id].astro` — uses a script that runs after the page loads to initialize Leaflet.
+The map setup is in `src/pages/strikes/[id].astro`  uses a script that runs after the page loads to initialize Leaflet.
 
 ---
 
@@ -94,7 +94,7 @@ The map setup is in `src/pages/strikes/[id].astro` — uses a script that runs a
 ### Strategy
 
 **What's the goal?**  
-Make drone strike data explorable and understandable. The raw API data is just JSON — this project turns it into something you can actually browse and learn from.
+Make drone strike data explorable and understandable. The raw API data is just JSON this project turns it into something you can actually browse and learn from.
 
 **Who's it for?**  
 Researchers, students, journalists, or really anyone curious about this topic. The data is public, but not exactly user-friendly in its raw form.
@@ -117,15 +117,15 @@ I kept the scope manageable — the core functionality is solid, and there's roo
 
 ### Structure
 
-**Home (`/`)** — Project intro, stats cards showing totals, latest strike preview, and links to explore the data.
+**Home (`/`)** Project intro, stats cards showing totals, latest strike preview, and links to explore the data.
 
-**All Strikes (`/strikes/`)** — Table listing all 600+ strikes with date, country, location, deaths, and links to detail pages.
+**All Strikes (`/strikes/`)** Table listing all 600+ strikes with date, country, location, deaths, and links to detail pages.
 
-**Strike Detail (`/strikes/[id]/`)** — Individual page for each strike showing date, location, country, casualty info, narrative/summary, Leaflet map (if coords exist), and source link.
+**Strike Detail (`/strikes/[id]/`)** Individual page for each strike showing date, location, country, casualty info, narrative/summary, Leaflet map (if coords exist), and source link.
 
-**Map Data (`/map-data/`)** — Card grid showing only strikes that have coordinates, so you can browse the ones with maps.
+**Map Data (`/map-data/`)** Card grid showing only strikes that have coordinates, so you can browse the ones with maps.
 
-**Countries (`/countries/`)** — Cards showing strike counts per country, sorted by most strikes.
+**Countries (`/countries/`)** Cards showing strike counts per country, sorted by most strikes.
 
 Navigation is consistent across all pages — Home, All Strikes, Map Data, By Country.
 
@@ -142,10 +142,10 @@ Navigation is consistent across all pages — Home, All Strikes, Map Data, By Co
 ### Surface
 
 **Colors:**  
-Dark blue background (`#0a1628`), orange accent (`#f59e0b`). Went for a darker theme since the subject matter is pretty heavy — didn't want it to feel too bright or casual.
+Dark blue background (`#0a1628`), orange accent (`#f59e0b`). Went for a darker theme since the subject matter is pretty heavy, didn't want it to feel too bright or casual.
 
 **Typography:**  
-System fonts (Segoe UI, etc.) — keeps it clean and loads fast.
+System fonts (Segoe UI, etc.) keeps it clean and loads fast.
 
 **Visual touches:**
 - Cards have borders that highlight orange on hover
@@ -170,7 +170,7 @@ System fonts (Segoe UI, etc.) — keeps it clean and loads fast.
 
 All strike data comes from the [dronestre.am API](https://api.dronestre.am/data), which compiles data originally gathered by [The Bureau of Investigative Journalism](https://www.thebureauinvestigates.com).
 
-The API is public and doesn't require authentication — no API keys needed to run this project.
+The API is public and doesn't require authentication, no API keys needed to run this project.
 
 ---
 
