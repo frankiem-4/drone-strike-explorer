@@ -2,7 +2,7 @@
 
 A web app for exploring US drone strike data. Built with Astro and Leaflet.js for my CSCI E-12 final project.
 
-🔗 **Live Site:** [https://github.com/frankiem-4/drone-strike-explorer](https://github.com/frankiem-4/drone-strike-explorer)
+**Live Site:** [https://frankiem-4.github.io/drone-strike-explorer/](https://frankiem-4.github.io/drone-strike-explorer/)
 
 ---
 
